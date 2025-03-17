@@ -1,32 +1,113 @@
-# Prerequisites
-*.d
+body {
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+    margin: 0;
 
-# Precompiled Headers
-*.gch
-*.pch
+    font-family: 'Arial', sans-serif;
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+    background: url('background.jpg') no-repeat center center fixed; 
 
-# Fortran module files
-*.mod
-*.smod
+    background-size: cover;
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+    color: #fff;
 
-# Executables
-*.exe
-*.out
-*.app
+}
+
+
+.container {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    height: 100vh;
+
+}
+
+
+.card {
+
+    background: rgba(0, 0, 0, 0.7);
+
+    border-radius: 15px;
+
+    padding: 20px;
+
+    text-align: center;
+
+    width: 300px;
+
+}
+
+
+.profile {
+
+    margin-bottom: 15px;
+
+}
+
+
+.avatar {
+
+    width: 100px;
+
+    height: 100px;
+
+    border-radius: 50%;
+
+}
+
+
+.username {
+
+    font-size: 24px;
+
+    margin: 10px 0;
+
+}
+
+
+.description {
+
+    font-size: 14px;
+
+}
+
+
+.date {
+
+    font-size: 12px;
+
+    margin: 10px 0;
+
+}
+
+
+.icons {
+
+    display: flex;
+
+    justify-content: space-around;
+
+    margin: 15px 0;
+
+}
+
+
+.icon {
+
+    width: 30px;
+
+    height: 30px;
+
+}
+
+
+.footer {
+
+    font-size: 12px;
+
+    margin-top: 20px;
+
+}
