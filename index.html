@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Random Number</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background-color: #0f0f17;
+            color: #00fffb;
+            overflow-x: hidden;
+        }
+        
+        .number-container {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 2px solid #00fffb;
+            box-shadow: 0 0 20px rgba(0, 255, 251, 0.3);
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .number-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(0, 255, 251, 0),
+                rgba(0, 255, 251, 0),
+                rgba(0, 255, 251, 0.3),
+                rgba(0, 255, 251, 0)
+            );
+            transform: rotate(30deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% {
+                transform: rotate(30deg) translate(-30%, -30%);
+            }
+            100% {
+                transform: rotate(30deg) translate(30%, 30%);
+            }
+        }
+        
+        .digit {
+            display: inline-block;
+            width: 60px;
+            height: 90px;
+            background: rgba(0, 0, 0, 0.5);
+            margin: 0 5px;
+            border-radius: 10px;
+            border: 1px solid #00fffb;
+            text-align: center;
+            line-height: 90px;
+            font-size: 3rem;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 255, 251, 0.5);
+        }
+        
+        @media (max-width: 640px) {
+            .digit {
+                width: 40px;
+                height: 60px;
+                font-size: 2rem;
+                line-height: 60px;
+            }
+        }
+        
+        .btn {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 255, 251, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transform: translateX(-100%);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::after {
+            transform: translateX(100%);
+        }
+        
+        .glow {
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #00fffb, 0 0 20px #00fffb, 0 0 25px #00fffb;
+            }
+            to {
+                text-shadow: 0 0 10px #fff, 0 0 20px #00fffb, 0 0 30px #00fffb, 0 0 40px #00fffb, 0 0 50px #00fffb;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="text-center mb-8">
+        <h1 class="text-4xl md:text-5xl font-bold mb-2 glow">Random Number Generator</h1>
+        <p class="text-lg md:text-xl text-gray-300">Gaming Edition</p>
+    </div>
+    
+    <div class="number-container p-8 md:p-12 mb-10">
+        <div id="numberDisplay" class="flex justify-center">
+            <span class="digit">-</span>
+            <span class="digit">-</span>
+            <span class="digit">-</span>
+            <span class="digit">-</span>
+        </div>
+    </div>
+    
+    <div class="flex flex-col sm:flex-row gap-4">
+        <button id="stopBtn" class="btn px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-full">
+            Freeze Number
+        </button>
+        <button id="resetBtn" class="btn px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full">
+            Reset
+        </button>
+    </div>
+    
+    <div class="mt-12">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8bc761c3-a503-418e-a7a5-09fd517f6310.png" alt="Abstract digital circuit board with neon blue and purple lights representing gaming technology" class="rounded-lg shadow-lg" />
+    </div>
+    
+    <script>
+        let timer;
+        let isRunning = true;
+        const digits = document.querySelectorAll('.digit');
+        const stopBtn = document.getElementById('stopBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        
+        // Generate random number between 1000 and 9999
+        function generateRandomNumber() {
+            const randNum = Math.floor(Math.random() * 9000) + 1000;
+            return randNum.toString();
+        }
+        
+        // Display number with digit animation
+        function displayNumber(number) {
+            digits.forEach((digit, index) => {
+                setTimeout(() => {
+                    digit.classList.add('transform', 'scale-110');
+                    setTimeout(() => {
+                        digit.textContent = number[index];
+                        digit.classList.remove('transform', 'scale-110');
+                        digit.classList.add('animate-pulse');
+                        setTimeout(() => {
+                            digit.classList.remove('animate-pulse');
+                        }, 500);
+                    }, 300);
+                }, index * 100);
+            });
+        }
+        
+        // Update number every 20 seconds
+        function startTimer() {
+            if (isRunning) {
+                displayNumber(generateRandomNumber());
+            }
+            timer = setTimeout(startTimer, 20000);
+        }
+        
+        // Initialize
+        function init() {
+            displayNumber(generateRandomNumber());
+            timer = setTimeout(startTimer, 20000);
+        }
+        
+        // Event listeners
+        stopBtn.addEventListener('click', () => {
+            isRunning = false;
+            clearTimeout(timer);
+            stopBtn.textContent = 'Number Frozen';
+            stopBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
+            stopBtn.classList.add('bg-gray-600', 'hover:bg-gray-700');
+            
+            // Add confetti effect
+            digits.forEach(digit => {
+                digit.classList.add('animate-bounce');
+            });
+        });
+        
+        resetBtn.addEventListener('click', () => {
+            isRunning = true;
+            clearTimeout(timer);
+            init();
+            
+            stopBtn.textContent = 'Freeze Number';
+            stopBtn.classList.remove('bg-gray-600', 'hover:bg-gray-700');
+            stopBtn.classList.add('bg-red-600', 'hover:bg-red-700');
+            
+            digits.forEach(digit => {
+                digit.classList.remove('animate-bounce');
+            });
+        });
+        
+        // Start the app
+        init();
+    </script>
+</body>
+</html>
+
